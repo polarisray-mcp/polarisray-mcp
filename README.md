@@ -24,7 +24,7 @@ PolarisRay exposes each live dataset as an MCP server over HTTP on `mcp.polarisr
 | [`/dailymed`](https://mcp.polarisray.com/dailymed) | NLM DailyMed labels |
 | [`/spl`](https://mcp.polarisray.com/spl) | openFDA Structured Product Labels |
 
-FAERS is **not** included in `/federated`. Conference search is planned (`/conferences`), not live.
+FAERS is **not** included in `/federated`.
 
 Hits include an official source `url` when a public detail page exists (MAUDE, trials, DailyMed / openFDA labels, iRES recalls). FAERS has no per-case FDA web page; links point at the quarterly extract.
 
