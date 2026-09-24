@@ -1,32 +1,32 @@
 # PolarisRay MCP
 
-Remote [Model Context Protocol](https://modelcontextprotocol.io/) servers for **public U.S. FDA and NIH datasets**. Free beta — no API key for public sources.
+Remote [Model Context Protocol](https://modelcontextprotocol.io/) servers for **public healthcare & life-sciences data** — FDA MAUDE, FAERS, ClinicalTrials.gov, DailyMed, openFDA SPL, and FDA recalls. Free beta — no account or API key for public sources.
 
 **Start here:** [`https://mcp.polarisray.com/federated`](https://mcp.polarisray.com/federated)
 
 **Docs:** [polarisray.com/docs](https://polarisray.com/docs/) · **Site:** [polarisray.com](https://polarisray.com) · **Catalog:** [polarisray.com/sources](https://polarisray.com/sources)
 
-> Discovery-grade access for assistants. Confirm anything important against the primary agency record (returned `url` when available). **Not medical advice.**
+> Built for healthcare & life-sciences teams — research, safety, and regulatory. Discovery-grade access for assistants: confirm important findings against the primary agency record (returned `url` when available). **Not medical advice.**
 
 ---
 
 ## What this is
 
-PolarisRay exposes each live dataset as an MCP server over HTTP on `mcp.polarisray.com`. Point Claude, Cursor, VS Code, or any remote-MCP client at an endpoint URL.
+PolarisRay turns hard-to-search public datasets into MCP servers your AI assistant can query in plain language. Each live dataset is an MCP server over HTTP on `mcp.polarisray.com`. Point Claude, Cursor, VS Code, or any remote-MCP client at an endpoint URL.
 
 | Endpoint | Corpus |
 | --- | --- |
-| [`/federated`](https://mcp.polarisray.com/federated) | **Recommended.** One call across MAUDE, ClinicalTrials.gov, DailyMed, openFDA SPL, and FDA recalls |
+| [`/federated`](https://mcp.polarisray.com/federated) | **Recommended.** One call across MAUDE, FAERS, ClinicalTrials.gov, DailyMed, openFDA SPL, and FDA recalls |
 | [`/maude`](https://mcp.polarisray.com/maude) | FDA device adverse-event reports (MAUDE) |
-| [`/faers`](https://mcp.polarisray.com/faers) | FDA drug adverse-event cases (FAERS) — **separate** from federated |
+| [`/faers`](https://mcp.polarisray.com/faers) | FDA drug adverse-event cases (FAERS) — also included in federated |
 | [`/recalls`](https://mcp.polarisray.com/recalls) | FDA enforcement / recall reports |
 | [`/clinical_trials`](https://mcp.polarisray.com/clinical_trials) | ClinicalTrials.gov (via CTTI AACT) |
 | [`/dailymed`](https://mcp.polarisray.com/dailymed) | NLM DailyMed labels |
 | [`/spl`](https://mcp.polarisray.com/spl) | openFDA Structured Product Labels |
 
-FAERS is **not** included in `/federated`.
+`/federated` searches all six corpora in one call; each source is also available as its own server. Browse the [catalog](https://polarisray.com/sources) for tools, examples, and disclaimers.
 
-Hits include an official source `url` when a public detail page exists (MAUDE, trials, DailyMed / openFDA labels, iRES recalls). FAERS has no per-case FDA web page; links point at the quarterly extract.
+Hits include an official source `url` when a public detail page exists (MAUDE, ClinicalTrials.gov, DailyMed / openFDA labels, iRES recalls). FAERS has no per-case FDA web page; links point at the quarterly extract.
 
 ---
 
@@ -85,7 +85,7 @@ Full endpoint set (optional):
 
 ### Cursor / other remote MCP clients
 
-Same shape — supply the HTTP URL for the server you want. Public sources need **no credentials**.
+Any client that supports remote MCP over HTTP works the same way — supply the endpoint URL. Public datasets need **no credentials**. Sources that wrap rate-limited or licensed data document an API-key flow on their individual pages.
 
 ---
 
@@ -95,7 +95,7 @@ On [`/federated`](https://mcp.polarisray.com/federated):
 
 | Tool | Use when |
 | --- | --- |
-| `federated_search` | Keyword + shared facets across MAUDE, trials, DailyMed, openFDA SPL, recalls; optional `source`, dates, filters |
+| `federated_search` | Keyword + shared facets across MAUDE, FAERS, trials, DailyMed, openFDA SPL, recalls; optional `source`, dates, filters |
 | `semantic_search` | Meaning-based / hybrid search when wording differs from indexed text |
 | `correlate` | One facet (e.g. disease or manufacturer): AE volume vs registered trials + co-occurring terms |
 | `resolve` | Normalize lay terms → canonical facet labels before precise search/correlate |
@@ -108,15 +108,15 @@ Per-source servers expose their own search / get tools; see each page under [Sou
 
 ## Caveats (read before relying on results)
 
-- **Public data only** — public-domain U.S. Food and Drug Administration and U.S. National Institutes of Health corpora; free beta; endpoints may change.
-- **Discovery-grade** — useful in an assistant; confirm via returned `url` or the agency’s own tools before decisions.
-- **Not medical advice** — informational / research use only; not diagnosis, treatment, or clinical decision support.
+- **Public data / free beta** — public U.S. Food and Drug Administration and U.S. National Institutes of Health corpora; free early beta (no ads, paywalls, or accounts for public sources); datasets, tools, and endpoints may change.
+- **Discovery-grade** — useful in an assistant; confirm via returned `url` or the agency’s own tools before decisions. PolarisRay does not guarantee accuracy, completeness, or timeliness.
+- **Not professional / medical advice** — informational / research use only; not diagnosis, treatment, clinical decision support, or other professional advice.
 - **Passive surveillance limits** — MAUDE / FAERS reports are unverified, may be incomplete or duplicated, and do **not** prove causation; counts are not rates.
-- **FAERS ≠ federated** — drug-case search lives at `/faers` only.
-- **No PHI** — do not send protected health information in queries; treat the host like any third-party API.
-- **Not an FDA/NIH product** — PolarisRay is an access layer; data sources are attributed, not partnered.
+- **FAERS in federated and standalone** — drug-case search is in `/federated` and also at `/faers`.
+- **No PHI** — do not send protected health information in queries; treat the host like any third-party API. MCP endpoints process queries only to return results and operate the service — not for advertising, and not sold. (See [Legal](https://polarisray.com/legal).)
+- **Not an FDA/NIH product** — PolarisRay is an access layer; data sources are attributed, not partnered. Datasets remain under their authorities’ terms.
 
-More detail: [Legal](https://polarisray.com/legal) · source disclaimers on each [Sources](https://polarisray.com/sources) page.
+More detail: [Legal](https://polarisray.com/legal) · [About](https://polarisray.com/about) · source disclaimers on each [Sources](https://polarisray.com/sources) page.
 
 ---
 
@@ -126,10 +126,12 @@ More detail: [Legal](https://polarisray.com/legal) · source disclaimers on each
 - Federated endpoint: https://mcp.polarisray.com/federated
 - Source catalog: https://polarisray.com/sources
 - Why PolarisRay: https://polarisray.com/why
+- About: https://polarisray.com/about
 - Status: https://polarisray.com/status
+- Legal: https://polarisray.com/legal
 
 ---
 
 ## License / attribution
 
-Underlying datasets are from the **U.S. Food and Drug Administration** and the **U.S. National Institutes of Health** (ClinicalTrials.gov via CTTI AACT; DailyMed via NLM — as documented on each source page). This README describes the PolarisRay MCP access layer; it is not an official FDA or NIH publication.
+Underlying datasets are from the **U.S. Food and Drug Administration** and the **U.S. National Institutes of Health** (ClinicalTrials.gov via CTTI AACT; DailyMed via NLM — as documented on each source page). Datasets remain the property of their respective authorities. This README describes the PolarisRay MCP access layer; it is not an official FDA or NIH publication.
