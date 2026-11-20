@@ -1,6 +1,6 @@
 # PolarisRay MCP
 
-Remote [Model Context Protocol](https://modelcontextprotocol.io/) servers for **public healthcare & life-sciences data** — FDA MAUDE, FAERS and recalls, ClinicalTrials.gov and global trial registries, DailyMed and openFDA SPL labels, ChEMBL, PubChem and PDB, plus Analytics for ready-made answers. Free beta — no account or API key for public sources.
+Remote [Model Context Protocol](https://modelcontextprotocol.io/) servers for **public healthcare & life-sciences data** — FDA MAUDE, FAERS and recalls, ClinicalTrials.gov and global trial registries, DailyMed and openFDA SPL labels, ChEMBL, PubChem, PDB and SureChEMBL pharmaceutical patents, plus Analytics for ready-made answers. Free beta — no account or API key for public sources.
 
 **Start here:** [`https://mcp.polarisray.com/federated`](https://mcp.polarisray.com/federated)
 
@@ -16,7 +16,7 @@ PolarisRay turns hard-to-search public datasets into MCP servers your AI assista
 
 | Endpoint | Corpus |
 | --- | --- |
-| [`/federated`](https://mcp.polarisray.com/federated) | **Recommended.** One call across all ten data sources below, plus the main Analytics tools |
+| [`/federated`](https://mcp.polarisray.com/federated) | **Recommended.** One call across all eleven data sources below, plus the main Analytics tools |
 | [`/maude`](https://mcp.polarisray.com/maude) | FDA device adverse-event reports (MAUDE) |
 | [`/faers`](https://mcp.polarisray.com/faers) | FDA drug adverse-event cases (FAERS) — also included in federated |
 | [`/recalls`](https://mcp.polarisray.com/recalls) | FDA enforcement / recall reports |
@@ -27,11 +27,12 @@ PolarisRay turns hard-to-search public datasets into MCP servers your AI assista
 | [`/chembl`](https://mcp.polarisray.com/chembl) | ChEMBL bioactive molecules: targets, mechanisms, indications (EMBL-EBI) |
 | [`/pubchem`](https://mcp.polarisray.com/pubchem) | PubChem: drug substances to chemical identity (CID, InChIKey, formula) |
 | [`/pdb`](https://mcp.polarisray.com/pdb) | RCSB PDB: experimentally determined 3D structures |
+| [`/surechembl`](https://mcp.polarisray.com/surechembl) | SureChEMBL pharmaceutical patents (CPC A61K/A61P/C07K): the compounds, targets and diseases they name, linked to ChEMBL (EMBL-EBI) |
 | [`/analytics`](https://mcp.polarisray.com/analytics) | Answers, not records: drug and company dossiers, label gaps, class comparisons, loss of exclusivity, market share |
 
-`/federated` searches all ten data sources in one call; each is also available as its own server. `/analytics` computes answers across them (its main tools are also on `/federated`). Browse the [catalog](https://polarisray.com/sources) for tools, examples, and disclaimers.
+`/federated` searches all eleven data sources in one call; each is also available as its own server. `/analytics` computes answers across them (its main tools are also on `/federated`). Browse the [catalog](https://polarisray.com/sources) for tools, examples, and disclaimers.
 
-Hits include an official source `url` when a public detail page exists (MAUDE, ClinicalTrials.gov and the national trial registries, DailyMed / openFDA labels, iRES recalls). FAERS has no per-case FDA web page; links point at the quarterly extract.
+Hits include an official source `url` when a public detail page exists (MAUDE, ClinicalTrials.gov and the national trial registries, DailyMed / openFDA labels, iRES recalls, SureChEMBL patents). FAERS has no per-case FDA web page; links point at the quarterly extract.
 
 ---
 
@@ -87,6 +88,7 @@ Full endpoint set (optional):
     "polarisray-chembl": { "url": "https://mcp.polarisray.com/chembl" },
     "polarisray-pubchem": { "url": "https://mcp.polarisray.com/pubchem" },
     "polarisray-pdb": { "url": "https://mcp.polarisray.com/pdb" },
+    "polarisray-surechembl": { "url": "https://mcp.polarisray.com/surechembl" },
     "polarisray-analytics": { "url": "https://mcp.polarisray.com/analytics" },
     "polarisray-federated": { "url": "https://mcp.polarisray.com/federated" }
   }
@@ -105,7 +107,7 @@ On [`/federated`](https://mcp.polarisray.com/federated):
 
 | Tool | Use when |
 | --- | --- |
-| `federated_search` | Keyword + shared facets across all ten sources; optional `source`, dates, filters |
+| `federated_search` | Keyword + shared facets across all eleven sources; optional `source`, dates, filters |
 | `semantic_search` | Meaning-based / hybrid search when wording differs from indexed text |
 | `correlate` | One facet (e.g. disease or manufacturer): AE volume vs registered trials + co-occurring terms |
 | `resolve` | Normalize lay terms → canonical facet labels before precise search/correlate |
@@ -125,10 +127,11 @@ Per-source servers expose their own search / get tools; see each page under [Sou
 
 ## Caveats (read before relying on results)
 
-- **Public data / free beta** — public datasets from U.S. agencies (FDA, NIH, CMS, SEC), EMBL-EBI ChEMBL, RCSB PDB and national clinical-trial registries; free early beta (no ads, paywalls, or accounts for public sources); datasets, tools, and endpoints may change.
+- **Public data / free beta** — public datasets from U.S. agencies (FDA, NIH, CMS, SEC), EMBL-EBI ChEMBL and SureChEMBL, RCSB PDB and national clinical-trial registries; free early beta (no ads, paywalls, or accounts for public sources); datasets, tools, and endpoints may change.
 - **Discovery-grade** — useful in an assistant; confirm via returned `url` or the agency’s own tools before decisions. PolarisRay does not guarantee accuracy, completeness, or timeliness.
 - **Not professional / medical advice** — informational / research use only; not diagnosis, treatment, clinical decision support, or other professional advice.
 - **Passive surveillance limits** — MAUDE / FAERS reports are unverified, may be incomplete or duplicated, and do **not** prove causation; counts are not rates.
+- **Patents are not legal advice** — SureChEMBL compound, target and disease links are machine-extracted from published documents; results say what patents mention, not their legal status, validity, expiry or ownership (assignees are as published).
 - **FAERS in federated and standalone** — drug-case search is in `/federated` and also at `/faers`.
 - **No PHI** — do not send protected health information in queries; treat the host like any third-party API. MCP endpoints process queries only to return results and operate the service — not for advertising, and not sold. (See [Legal](https://polarisray.com/legal).)
 - **Not an official product of any data provider** — PolarisRay is an access layer; data sources are attributed, not partnered. Datasets remain under their authorities’ terms.
@@ -158,6 +161,7 @@ Underlying datasets, as documented on each source page:
 - **CMS** (Medicare / Medicaid spending, NADAC, Open Payments) and **SEC EDGAR** — used by Analytics
 - **EMBL-EBI ChEMBL** — CC BY-SA 3.0
 - **RCSB PDB** — CC0
+- **EMBL-EBI SureChEMBL** — CC BY 4.0; data from SureChEMBL (surechembl.org), pharmaceutical subset selected and normalised by PolarisRay, not endorsed by EMBL-EBI ([source page](https://polarisray.com/sources/surechembl/))
 - **Global trial registries** — data via WHO ICTRP, not endorsed by WHO; free use only; the current processing date is on the [source page](https://polarisray.com/sources/clinical_trials_intl/)
 
 Datasets remain the property of their respective authorities. This README describes the PolarisRay MCP access layer; it is not an official publication of any data provider.
